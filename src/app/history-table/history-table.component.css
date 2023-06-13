@@ -1,0 +1,29 @@
+ 
+  .mat-elevation-z8{
+    background-color: #282828;
+    display: table;
+  }
+  th{
+    padding-top: 10px;
+  }
+  td ,th {
+    vertical-align: middle;
+  }
+  .searchField{
+    flex-direction: row;
+    min-width: 30%;
+  }
+  .patchButton{
+    width: 25;
+    height: 30;
+    background-color: grey;
+    font-size: small;
+  }
+  .loadingSpinner{
+    left: 50%;
+    position: relative;
+    margin: 20px;
+  }
+  .table-div{
+    background-color: #282828 ;
+  }

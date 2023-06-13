@@ -1,0 +1,7 @@
+<header>
+    <div class="SessionUser">
+        <mat-icon style="font-size: 30px">person</mat-icon>
+        <em> Welcome <b>{{ getSessionUser().username}} </b></em>
+        <em *ngIf="isAdmin()">Admin</em>
+    </div>
+</header>

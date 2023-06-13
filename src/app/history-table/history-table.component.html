@@ -1,0 +1,88 @@
+<div class="table-div">
+<div class="example-header">
+  <mat-form-field class="searchField">
+    <input matInput (keyup)="applyFilter($any($event.target).value)" placeholder="Filter">
+    <span matPrefix><mat-icon>search</mat-icon></span>
+  </mat-form-field>
+</div>
+<mat-table #table  [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($any($event))"
+       class="mat-elevation-z8">
+
+  <!-- time Column -->
+  <ng-container matColumnDef="time">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by time">
+      Time.
+    </th>
+    <td mat-cell *matCellDef="let element"> {{ element.time |date:'YYYY-MM-dd HH:mm:ss' }} </td>
+  </ng-container>
+
+  <!-- user Column -->
+  <ng-container matColumnDef="user">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by user">
+      User
+    </th>
+    <td mat-cell *matCellDef="let element"> {{element.user}} </td>
+  </ng-container>
+
+  <!-- Component Column -->
+  <ng-container matColumnDef="Component">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Component">
+      Component
+    </th>
+    <td mat-cell *matCellDef="let element"> {{element.Component}} </td>
+  </ng-container>
+
+  <!-- Version Column -->
+  <ng-container matColumnDef="Version">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Version">
+      Version
+    </th>
+    <td mat-cell *matCellDef="let element"> {{element.Version}} </td>
+  </ng-container>
+
+  <!-- Revision Column -->
+  <ng-container matColumnDef="Revision">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by Revision">
+      Revision
+    </th>
+    <td mat-cell *matCellDef="let element"> {{element.Revision}} </td>
+  </ng-container>
+
+  <!-- actionName Column -->
+  <ng-container matColumnDef="actionName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by actionName">Action</th>
+    <td mat-cell *matCellDef="let element">
+
+       <div *ngIf="element.actionName=='GIT_PATCH'">
+          <a href={{element.url}} target="_blank"><button mat-stroked-button class="patchButton">Patch</button></a>
+       </div>
+
+       <div *ngIf="(element.actionName =='SET_ACTIVE')">
+          <em style="color: green;">SET ACTIVE</em>
+      </div>
+      <div *ngIf="(element.actionName =='DEP_REGISTER')">
+        <em style="color:orange;">DEP REGISTER</em>
+      </div>
+      <div *ngIf="(element.actionName =='GIT_IMPORT')">
+        <em style="color:orange;">GIT IMPORT</em>
+      </div>
+      <div *ngIf="(element.actionName =='UPDATE_COMP')">
+        <em style="color:orange;">UPDATE COMP</em>
+      </div>
+  </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</mat-table>
+
+<div *ngIf="isLoading" class="loadingSpinner">
+  <mat-spinner [diameter]="50" ></mat-spinner>
+</div>
+
+<!-- Paginator -->
+            <mat-paginator [pageSizeOptions]="[10, 20, 50]"
+            showFirstLastButtons
+            aria-label="Select page of periodic elements">
+</mat-paginator>
+</div>

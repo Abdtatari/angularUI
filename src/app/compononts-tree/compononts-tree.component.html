@@ -1,0 +1,85 @@
+  
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="example-tree">
+  <table>
+  <tr>
+    <th>Name</th>
+    <th>Size(B)</th>
+    <th>Type</th>
+    <th>Last Modified</th>
+    <th></th>
+  </tr>
+    <!-- This is the tree node template for leaf nodes -->
+    <!-- There is inline padding applied to this node using styles.
+      This padding value depends on the mat-icon-button width. -->
+      
+    <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
+      <tr>
+        <td>{{node.Name}}</td>
+        <td>{{node.Size}}</td>
+        <td>{{node.Type}}</td>
+        <td>{{node.LastModified}}</td>
+        <td>
+          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" class="settingsButton">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu" class="menu">
+            <button mat-menu-item>
+              <mat-icon>history</mat-icon>
+              <span>History</span>
+            </button>
+            <button mat-menu-item>
+              <mat-icon>edit</mat-icon>
+              <span>Edit</span>
+            </button>
+            <button mat-menu-item>
+              <mat-icon>remove_circle</mat-icon>
+              <span>remove</span>
+            </button>
+          </mat-menu>
+        </td>
+      </tr>
+    </mat-tree-node>
+    <!-- This is the tree node template for expandable nodes -->
+    <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+        <div class="mat-tree-node">
+          <button mat-icon-button matTreeNodeToggle
+                  [attr.aria-label]="'Toggle ' + node.Name" class="expandButton">
+            <mat-icon class="mat-icon-rtl-mirror">
+              {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+            </mat-icon>
+          </button>
+          <tr>
+            <td>{{node.Name}}</td>
+            <td>{{node.Size}}</td>
+            <td>{{node.Type}}</td>
+            <td>{{node.LastModified}}</td>
+            <td>
+              <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" class="settingsButton">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu" class="menu">
+                <button mat-menu-item>
+                  <mat-icon>history</mat-icon>
+                  <span>History</span>
+                </button>
+                <button mat-menu-item>
+                  <mat-icon>edit</mat-icon>
+                  <span>Edit</span>
+                </button>
+                <button mat-menu-item>
+                  <mat-icon>remove_circle</mat-icon>
+                  <span>remove</span>
+                </button>
+              </mat-menu>
+            </td>
+          </tr>
+        </div>
+        <!-- There is inline padding applied to this div using styles.
+            This padding value depends on the mat-icon-button width.  -->
+        <div [class.example-tree-invisible]="!treeControl.isExpanded(node)"
+            role="group">
+          <ng-container matTreeNodeOutlet></ng-container>
+      </div>
+    </mat-nested-tree-node>
+  </table>
+  </mat-tree>

@@ -1,0 +1,110 @@
+<div class="table-div">
+  <table mat-table [dataSource]="dataSource!" class="mat-elevation-z8">
+    <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+   <!-- Name Column -->
+   <ng-container matColumnDef="icon">
+    <th mat-header-cell *matHeaderCellDef><a (click)="backFrom()"><mat-icon [innerHTML] = "backIcon" style="cursor: pointer;"></mat-icon></a></th>
+    <td mat-cell *matCellDef="let element"><div [innerHTML] = getIcon(element)></div></td>
+  </ng-container>
+    <!-- Name Column -->
+    <ng-container matColumnDef="Name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let element"> <a (click)="inside(element.id)" style="color: #145c9e;text-decoration: none;cursor: pointer;">{{element.name}}</a></td>
+    </ng-container>
+  
+    <!-- Size Column -->
+    <ng-container matColumnDef="Size" *ngIf="level!=2">
+      <th mat-header-cell *matHeaderCellDef> Size (B) </th>
+      <td mat-cell *matCellDef="let element"> <div *ngIf="element.size!=0">{{element.size}}</div></td>
+    </ng-container>
+  
+    <!-- Type Column -->
+    <ng-container matColumnDef="Type" *ngIf="level!=2" >
+      <th mat-header-cell *matHeaderCellDef> Type </th>
+      <td mat-cell *matCellDef="let element"> <div *ngIf="element.type!=-1">{{element.type}}</div></td>
+    </ng-container>
+
+    <!-- version Column -->
+    <ng-container matColumnDef="version"*ngIf="level==2">
+      <th mat-header-cell *matHeaderCellDef> Version </th>
+      <td mat-cell *matCellDef="let element"> {{element.version}}</td>
+    </ng-container>
+  
+    <!-- revision Column -->
+    <ng-container matColumnDef="revision" *ngIf="level==2">
+      <th mat-header-cell *matHeaderCellDef> Revision </th>
+      <td mat-cell *matCellDef="let element"> {{element.revision}}</td>
+    </ng-container>
+
+     <!-- Last Modified Column -->
+     <ng-container matColumnDef="LastModified">
+        <th mat-header-cell *matHeaderCellDef> Last Modified </th>
+        <td mat-cell *matCellDef="let element"> {{element.lastModified}} </td>
+      </ng-container>
+
+          <!-- Actions Column -->
+     <ng-container matColumnDef="Options">
+        <th mat-header-cell *matHeaderCellDef>Options</th>
+        <td mat-cell *matCellDef="let element" >
+          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu" class="settingsButton">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu" class="menu">
+            <button mat-menu-item (click)="goToHistory(element.id)">
+              <mat-icon>history</mat-icon>
+              <span>History</span>
+            </button>
+            <button mat-menu-item (click)="printGitlab()">
+              <mat-icon>edit</mat-icon>
+              <span>Edit</span>
+            </button>
+            <button mat-menu-item>
+              <mat-icon>remove_circle</mat-icon>
+              <span>remove</span>
+            </button>
+          </mat-menu>
+        </td>
+      </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <div *ngIf="isLoading" class="loadingSpinner">
+    <mat-spinner [diameter]="50" ></mat-spinner>
+  </div>
+
+            <!-- Paginator -->
+  <mat-paginator [pageSizeOptions]="[10, 20, 50]"
+                 showFirstLastButtons
+                 aria-label="Select page of periodic elements">
+  </mat-paginator>
+</div>
+<div *ngIf="level>=3">
+  <table mat-table [dataSource]="childrendataSource" class="mat-elevation-z8">
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element"> {{element.path}} </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="childrendisplayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: childrendisplayedColumns;"></tr>
+  </table>
+</div>
+              <!-- Form -->
+              <button mat-raised-button color="primary"  (click)="formVisibility()"><mat-icon *ngIf="showForm">visibility</mat-icon> <mat-icon *ngIf="!showForm">visibility_off</mat-icon>Show</button>
+              <div class="form" *ngIf="showForm">
+                <form #theForm (ngSubmit)="createAccount(name.controller,gender.controller,description.controller,seasion.controller,theForm)">
+                  <h2 style="color:whitesmoke">Create Account</h2>
+                  <app-text-field [required]="true" #name [label]="'name'" [placeHolder]="'fullname'"></app-text-field>
+                  <app-drop-down #gender [hint]="'select your gender'" [label]="'gender'" [values]="['Male','Female']" [required]="true"></app-drop-down>  <br><br>
+                  <app-rich-text-field #description [label]="'Tell us about your self'"></app-rich-text-field><br>
+                  <app-radio-button [seasons]="['Winter', 'Spring', 'Summer', 'Autumn']" [required]="true" #seasion></app-radio-button><br><br>
+              
+                  <button mat-raised-button color="primary" type="button" (click)="fileInput.click()"><mat-icon>arrow_upward</mat-icon> upload</button>  <br>
+                  <input #fileInput type="file" style="display:none"/><br><br>
+              
+                  <button style="float: right;" mat-raised-button color="primary" type="submit">Send</button> <br>
+                </form>
+              </div>
